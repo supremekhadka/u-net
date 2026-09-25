@@ -1,0 +1,23 @@
+[project]
+name = "u-net"
+version = "0.1.0"
+description = "PyTorch implementation of the U-Net architecture"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch",
+    "torchvision"
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu132", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+torchvision = [
+  { index = "pytorch-cu132", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+
+[[tool.uv.index]]
+name="pytorch-cu132"
+url="https://download.pytorch.org/whl/cu132"
+explicit=true
