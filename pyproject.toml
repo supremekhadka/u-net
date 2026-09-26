@@ -1,12 +1,13 @@
 [project]
-name = "u-net"
+name = "unet"
 version = "0.1.0"
 description = "PyTorch implementation of the U-Net architecture"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pytest>=9.1.1",
     "torch",
-    "torchvision"
+    "torchvision",
 ]
 
 [tool.uv.sources]
