@@ -2,8 +2,7 @@ import argparse
 import yaml
 from torch.nn import CrossEntropyLoss
 from torch.optim import AdamW
-from unet import run_training, load_model, BriscDataset, BriscTransform
-from torch.utils.data import DataLoader
+from unet import run_training, build_dataloaders, build_model
 
 def main():
     parser = argparse.ArgumentParser()
@@ -14,64 +13,21 @@ def main():
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    train_transforms = BriscTransform(
-            size=572,
-            mean=0.195,
-            std=0.168,
-            train=True
-        )
-
-    val_transforms = BriscTransform(
-            size=572,
-            mean=0.195,
-            std=0.168,
-            train=False
-        )
-
-    train_dataset = BriscDataset(
-            images_root=config.images_root,
-            csv=config.csv,
-            split="train",
-            transforms=train_transforms
-        )
-
-    val_dataset = BriscDataset(
-            images_root=config.images_root,
-            csv=config.csv,
-            split="val",
-            transforms=val_transforms
-        )
-
-    train_dataloader = DataLoader(
-            dataset=train_dataset, 
-            batch_size=config.batch_size
-        )
-
-    val_dataloader = DataLoader(
-            val_dataset, 
-            batch_size=config.batch_size
-        )
-
-    model = load_model(
-        device=config.device,
-        in_channels=1,
-        out_channels=4,
-        base_channels=64,
-        depth=4
-    )
+    train_dataloader, val_dataloader = build_dataloaders(config)
+    model = build_model(config)
 
     criterion = CrossEntropyLoss()
-    optimizer = AdamW(model.parameters(), lr=config.lr)
+    optimizer = AdamW(model.parameters(), lr=config["lr"])
 
     run_training(
         model=model,
-        device=config.device,
+        device=config["training"]["device"],
         train_dataloader=train_dataloader,
         val_dataloader=val_dataloader,
         criterion=criterion,
         optimizer=optimizer,
-        epochs=config.epochs,
-        output_dir=config.output_dir
+        epochs=config["training"]["epochs"],
+        output_dir=config["training"]["output_dir"]
     )
 
 if __name__ == "__main__":
