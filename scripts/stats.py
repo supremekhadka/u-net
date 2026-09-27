@@ -20,31 +20,23 @@ def main():
     df = df[df["split"] == args.split]
     paths = df["image_path"].to_list()
 
-    mean_sum = 0
-    std_sum = 0
+    sum_ = 0.0
+    sum_sq = 0.0
+    count = 0
 
     for path in paths:
         image_path = Path(args.images_root) / Path(path.replace("\\", "/"))
-
         image = decode_image(image_path)
-        image = v2.Compose(       
-            [
-                v2.ToImage(),
-                v2.ToDtype(torch.float32, scale=True),
-                v2.Grayscale()
-            ]
-        )(image)
+        image = v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True), v2.Grayscale()])(image)
 
-        tissue_pixels = image[image>0]
+        tissue_pixels = image[image > 0]
 
-        image_mean = tissue_pixels.mean().item()
-        image_std = tissue_pixels.std().item()
+        sum_ += tissue_pixels.sum().item()
+        sum_sq += (tissue_pixels ** 2).sum().item()
+        count += tissue_pixels.numel()
 
-        mean_sum += image_mean
-        std_sum += image_std
-
-    mean = mean_sum / len(paths)
-    std = std_sum / len(paths)
+    mean = sum_ / count
+    std = (sum_sq / count - mean ** 2) ** 0.5
 
     os.makedirs(args.output_dir, exist_ok=True)
     with open(Path(args.output_dir) / (args.output_filename + ".csv"), "w") as csv:
