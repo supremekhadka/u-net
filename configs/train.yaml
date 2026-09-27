@@ -1,0 +1,9 @@
+csv: "../data/brisc2025/metadata.csv"
+images_root: "../data/brisc2025/"
+
+device: "cuda:0"                              # "cuda:{i}" or "cpu"
+epochs: 200
+lr: 1e-5
+batch_size: 2
+
+output_dir: "./outputs/first"

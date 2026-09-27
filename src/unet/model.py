@@ -1,13 +1,14 @@
 import torch
 import torch.nn as nn
+from .utils import crop_feature_map
 from .blocks import DoubleConv, DownSample, UpSample
 
 class UNet(nn.Module):
-    def __init__(self, in_channels, out_channels, depth=4):
+    def __init__(self, in_channels, out_channels, base_channels=64, depth=4):
         super().__init__()
         self.depth = depth
-        self.encoder_channels = [in_channels] + [64*(2**i) for i in range(depth)]
-        self.decoder_channels = [64*(2**i) for i in range(depth+1)][::-1]
+        self.encoder_channels = [in_channels] + [base_channels*(2**i) for i in range(depth)]
+        self.decoder_channels = [base_channels*(2**i) for i in range(depth+1)][::-1]
 
         self.encoder = nn.ModuleList(
             [nn.ModuleList(
@@ -27,20 +28,6 @@ class UNet(nn.Module):
         
         self.conv = nn.Conv2d(in_channels=self.decoder_channels[-1], out_channels=out_channels, kernel_size=1, stride=1, padding=0)
 
-    def _crop_feature_map(self, feature_map, x):
-        '''
-        Center crops feature map to the shape of x in (h, w) dimensions.
-        '''
-        diff_h = (feature_map.shape[-2] - x.shape[-2])/2 
-        diff_w = (feature_map.shape[-1] - x.shape[-1])/2 
-
-        assert diff_h.is_integer(), "Height difference is not a whole number."
-        assert diff_w.is_integer(), "Width difference is not a whole number."
-
-        cropped = feature_map[:, :, int(diff_h) : int(x.shape[-2] + diff_h), int(diff_w) : int(x.shape[-1] + diff_w)]
-
-        return cropped
-
     def forward(self, x):
         feature_maps = dict([(index, None) for index in range(self.depth) ])
 
@@ -56,7 +43,7 @@ class UNet(nn.Module):
             for index in range(len(self.decoder[level])):
                 x = self.decoder[level][index](x)
                 if index == 0:
-                    feature_map_cropped = self._crop_feature_map(feature_maps[self.depth - level - 1], x)
+                    feature_map_cropped = crop_feature_map(feature_maps[self.depth - level - 1], x)
                     x = torch.cat((feature_map_cropped, x), dim=-3)
 
         x = self.conv(x)

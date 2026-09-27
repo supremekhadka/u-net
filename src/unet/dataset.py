@@ -1,5 +1,6 @@
 import pandas as pd
 import torch
+from .utils import crop_feature_map
 from pathlib import Path
 from torchvision.transforms import v2
 from torchvision.io import decode_image
@@ -20,6 +21,7 @@ class BriscDataset(Dataset):
 
         target = torch.zeros_like(binary, dtype=torch.int)
         target[binary] = label
+        target.squeeze_()
 
         return target
 
@@ -38,4 +40,5 @@ class BriscDataset(Dataset):
         if self.transforms:
             image, mask = self.transforms(image, mask)
 
+        mask = crop_feature_map(mask, torch.zeros((388,388)))
         return image, mask
