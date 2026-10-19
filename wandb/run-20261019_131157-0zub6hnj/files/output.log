@@ -1,0 +1,38 @@
+Epoch 1:
+  0%|                                                      | 0/719 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/var/home/supremekhadka/Projects/u-net/train.py", line 40, in <module>
+    main()
+  File "/var/home/supremekhadka/Projects/u-net/train.py", line 27, in main
+    run_training(
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 72, in run_training
+    train_loss = train_one_epoch(epoch, model, device, train_dataloader, criterion, optimizer)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 34, in train_one_epoch
+    running_loss += train_one_batch(model, images, masks, criterion, optimizer)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 19, in train_one_batch
+    output = model(images)
+             ^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/model.py", line 44, in forward
+    x = self.decoder[level][index](x)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/blocks.py", line 17, in forward
+    x = F.relu(x)
+        ^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/torch/nn/functional.py", line 1777, in relu
+    result = torch.relu(input)
+             ^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 148.00 MiB. GPU 0 has a total capacity of 3.64 GiB of which 80.62 MiB is free. Including non-PyTorch memory, this process has 3.56 GiB memory in use. Of the allocated memory 3.40 GiB is allocated by PyTorch, and 98.40 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)

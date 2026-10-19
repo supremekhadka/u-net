@@ -1,0 +1,85 @@
+_wandb:
+    value:
+        cli_version: 0.31.0
+        e:
+            01a1530e-dd63-7694-a6a5-a3c5601b50bf:
+                args:
+                    - --config
+                    - ./configs/config.yaml
+                codePath: train.py
+                codePathLocal: train.py
+                cpu:
+                    model: AMD Ryzen 7 4800H with Radeon Graphics
+                cpu_count: 8
+                cpu_count_logical: 16
+                cudaVersion: "13.4"
+                disk:
+                    /:
+                        total: "29433856"
+                        used: "29433856"
+                email: supremekhadka2@gmail.com
+                executable: /var/home/supremekhadka/Projects/u-net/.venv/bin/python3
+                git:
+                    commit: ea9eb27e97138ce6862bdfd3c210f006c84d77c9
+                    remote: git@github.com:supremekhadka/u-net.git
+                gpu: NVIDIA GeForce GTX 1650 Ti
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Turing
+                      cudaCores: 1024
+                      memoryTotal: "4294967296"
+                      name: NVIDIA GeForce GTX 1650 Ti
+                      pciBusId: "00000000:01:00.0"
+                      uuid: GPU-d393d7c8-e9fa-ce39-8f8d-41622c565d36
+                host: supreme
+                memory:
+                    total: "16085385216"
+                os: Linux-7.1.8-200.fc44.x86_64-x86_64-with-glibc2.39
+                program: /var/home/supremekhadka/Projects/u-net/train.py
+                python: CPython 3.12.14
+                root: /var/home/supremekhadka/Projects/u-net
+                startedAt: "2026-10-19T07:27:25.535885Z"
+                writerId: 01a1530e-dd63-7694-a6a5-a3c5601b50bf
+        m: []
+        python_version: 3.12.14
+        t:
+            "1":
+                - 1
+                - 5
+                - 41
+                - 53
+            "2":
+                - 1
+                - 5
+                - 41
+                - 53
+            "3":
+                - 16
+            "4": 3.12.14
+            "5": 0.31.0
+            "12": 0.31.0
+            "13": linux-x86_64
+dataset:
+    value:
+        csv: ../data/brisc2025/metadata.csv
+        images_root: ../data/brisc2025/
+        mean: 0.195
+        size: 572
+        std: 0.168
+model:
+    value:
+        base_channels: 64
+        depth: 4
+        in_channels: 1
+        out_channels: 4
+training:
+    value:
+        batch_size: 2
+        device: cuda:0
+        epochs: 50
+        lr: "1e-5"
+        output_dir: ./outputs/first
+wandb:
+    value:
+        enable: true
+        project: unet-brisc

@@ -63,14 +63,32 @@ def save_checkpoint(model, dir, name):
     checkpoint_path = Path(dir) / name
     torch.save(model.state_dict(), checkpoint_path)
 
-def run_training(model, device, train_dataloader, val_dataloader, criterion, optimizer, epochs, output_dir, wandb=None):
+def run_training(
+    model,
+    device,
+    train_dataloader,
+    val_dataloader,
+    criterion,
+    optimizer,
+    epochs,
+    output_dir,
+    wandb=None,
+    train_validation_dataloader=None,
+):
     criterion = criterion.to(device)
 
     best_dice_score = -float('inf')
 
     for epoch in range(epochs):
         train_loss = train_one_epoch(epoch, model, device, train_dataloader, criterion, optimizer)
-        _, train_metrics = validate(model, device, train_dataloader, criterion)
+        evaluation_dataloader = (
+            train_validation_dataloader
+            if train_validation_dataloader is not None
+            else train_dataloader
+        )
+        _, train_metrics = validate(
+            model, device, evaluation_dataloader, criterion
+        )
         val_loss, val_metrics = validate(model, device, val_dataloader, criterion)
 
         if wandb is not None:

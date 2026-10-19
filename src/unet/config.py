@@ -25,6 +25,13 @@ def build_dataloaders(config):
             transforms=train_transforms
         )
 
+    train_validation_dataset = BriscDataset(
+            images_root=config["dataset"]["images_root"],
+            csv=config["dataset"]["csv"],
+            split="train",
+            transforms=val_transforms
+        )
+
     val_dataset = BriscDataset(
             images_root=config['dataset']["images_root"],
             csv=config['dataset']["csv"],
@@ -37,12 +44,17 @@ def build_dataloaders(config):
             batch_size=config["training"]["batch_size"]
         )
 
-    val_dataloader = DataLoader(
-            val_dataset, 
-            batch_size=config["training"]["batch_size"]
+    train_validation_dataloader = DataLoader(
+            dataset=train_validation_dataset,
+            batch_size=config["validation"]["batch_size"]
         )
 
-    return train_dataloader, val_dataloader
+    val_dataloader = DataLoader(
+            val_dataset, 
+            batch_size=config["validation"]["batch_size"]
+        )
+
+    return train_dataloader, train_validation_dataloader, val_dataloader
 
 
 def build_model(config):

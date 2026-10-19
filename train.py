@@ -13,7 +13,7 @@ def main():
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    train_dataloader, val_dataloader = build_dataloaders(config)
+    train_dataloader, train_validation_dataloader, val_dataloader = build_dataloaders(config)
     model = build_model(config)
 
     criterion = CrossEntropyLoss()
@@ -33,7 +33,8 @@ def main():
         optimizer=optimizer,
         epochs=config["training"]["epochs"],
         output_dir=config["training"]["output_dir"],
-        wandb=wandb
+        wandb=wandb,
+        train_validation_dataloader=train_validation_dataloader,
     )
 
 if __name__ == "__main__":

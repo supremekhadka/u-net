@@ -1,0 +1,45 @@
+2026-10-19 13:12:25,537 INFO    MainThread:60606 [wandb_setup.py:_flush():81] Current SDK version is 0.31.0
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_setup.py:_flush():81] Configure stats pid to 60606
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_init.py:setup_run_log_directory():740] Logging user logs to /var/home/supremekhadka/Projects/u-net/wandb/run-20261019_131225-sp32rhle/logs/debug.log
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_init.py:setup_run_log_directory():741] Logging internal logs to /var/home/supremekhadka/Projects/u-net/wandb/run-20261019_131225-sp32rhle/logs/debug-internal.log
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_init.py:init():784] calling init triggers
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_init.py:init():789] wandb.init called with sweep_config: {}
+config: {'model': {'in_channels': 1, 'out_channels': 4, 'base_channels': 64, 'depth': 4}, 'dataset': {'csv': '../data/brisc2025/metadata.csv', 'images_root': '../data/brisc2025/', 'size': 572, 'mean': 0.195, 'std': 0.168}, 'training': {'device': 'cuda:0', 'epochs': 50, 'lr': '1e-5', 'batch_size': 2, 'output_dir': './outputs/first'}, 'wandb': {'enable': True, 'project': 'unet-brisc'}, '_wandb': {}}
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_init.py:init():832] starting backend
+2026-10-19 13:12:25,538 INFO    MainThread:60606 [wandb_init.py:init():847] sending inform_init request
+2026-10-19 13:12:25,541 INFO    MainThread:60606 [wandb_init.py:init():852] backend started and connected
+2026-10-19 13:12:25,542 INFO    MainThread:60606 [wandb_init.py:init():922] updated telemetry
+2026-10-19 13:12:25,551 INFO    MainThread:60606 [wandb_init.py:init():940] communicating run to backend with 90.0 second timeout
+2026-10-19 13:12:26,302 INFO    MainThread:60606 [wandb_init.py:init():977] starting run threads in backend
+2026-10-19 13:12:26,448 INFO    MainThread:60606 [wandb_run.py:_console_start():2528] atexit reg
+2026-10-19 13:12:26,449 INFO    MainThread:60606 [wandb_run.py:_redirect():2378] redirect: wrap_raw
+2026-10-19 13:12:26,449 INFO    MainThread:60606 [wandb_run.py:_redirect():2447] Wrapping output streams.
+2026-10-19 13:12:26,449 INFO    MainThread:60606 [wandb_run.py:_redirect():2470] Redirects installed.
+2026-10-19 13:12:26,450 INFO    MainThread:60606 [wandb_init.py:init():1015] run started, returning control to user process
+2026-10-19 13:14:22,095 INFO    wandb-AsyncioManager-main:60606 [service_client.py:_forward_responses():122] [no run ID] Reached EOF.
+2026-10-19 13:14:22,095 INFO    wandb-AsyncioManager-main:60606 [mailbox.py:close():154] [no run ID] Closing mailbox, abandoning 1 handles.
+2026-10-19 13:14:22,096 ERROR   wandb-AsyncioManager-main:60606 [asyncio_manager.py:fn_wrap_exceptions():197] Uncaught exception in run_soon callback.
+Traceback (most recent call last):
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/lib/asyncio_manager.py", line 195, in fn_wrap_exceptions
+    await fn()
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/lib/run_messages.py", line 90, in loop
+    await asyncio_compat.race(
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/lib/asyncio_compat.py", line 279, in race
+    async with open_task_group(race=True) as tg:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/contextlib.py", line 217, in __aexit__
+    await anext(self.gen)
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/lib/asyncio_compat.py", line 241, in open_task_group
+    await task_group._wait_all(race=race, timeout=exit_timeout)
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/lib/asyncio_compat.py", line 181, in _wait_all
+    raise exc
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/lib/run_messages.py", line 113, in _print_all
+    result = await handle.wait_async(timeout=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/mailbox/mailbox_handle.py", line 127, in wait_async
+    response = await self._handle.wait_async(timeout=timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/.venv/lib64/python3.12/site-packages/wandb/sdk/mailbox/response_handle.py", line 123, in wait_async
+    raise HandleAbandonedError()
+wandb.sdk.mailbox.mailbox_handle.HandleAbandonedError

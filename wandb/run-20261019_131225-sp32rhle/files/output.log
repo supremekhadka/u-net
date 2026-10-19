@@ -1,0 +1,17 @@
+Epoch 1:
+ 14%|█████▉                                     | 197/1438 [01:55<12:08,  1.70it/s]
+Traceback (most recent call last):
+  File "/var/home/supremekhadka/Projects/u-net/train.py", line 40, in <module>
+    main()
+  File "/var/home/supremekhadka/Projects/u-net/train.py", line 27, in main
+    run_training(
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 72, in run_training
+    train_loss = train_one_epoch(epoch, model, device, train_dataloader, criterion, optimizer)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 34, in train_one_epoch
+    running_loss += train_one_batch(model, images, masks, criterion, optimizer)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 25, in train_one_batch
+    return loss.item()
+           ^^^^^^^^^^^
+KeyboardInterrupt
