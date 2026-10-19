@@ -1,0 +1,15 @@
+Epoch 1:
+100%|████████████████████████████████████████████████████████████████████████████████| 1438/1438 [14:08<00:00,  1.70it/s]
+ 22%|█████████████████▉                                                               | 319/1438 [01:13<04:17,  4.35it/s]
+Traceback (most recent call last):
+  File "/var/home/supremekhadka/Projects/u-net/train.py", line 40, in <module>
+    main()
+  File "/var/home/supremekhadka/Projects/u-net/train.py", line 27, in main
+    run_training(
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 73, in run_training
+    _, train_metrics = validate(model, device, train_dataloader, criterion)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/home/supremekhadka/Projects/u-net/src/unet/train.py", line 54, in validate
+    running_loss += loss.item()
+                    ^^^^^^^^^^^
+KeyboardInterrupt

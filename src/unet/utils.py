@@ -1,3 +1,16 @@
+import wandb
+
+def init_wandb(project, config):
+    wandb.login()
+
+    run = wandb.init(
+        project=project,
+        config=config
+    )
+
+    return run
+
+
 def crop_feature_map(feature_map, x):
     '''
     Center crops feature map to the shape of x in (h, w) dimensions.

@@ -13,7 +13,7 @@ from unet import UNet
 def test_forward_shape(depth, in_channels, out_channels, input_size, expected_output_size):
     model = UNet(in_channels=in_channels, out_channels=out_channels, depth=depth)
     x = torch.rand((1, in_channels, input_size, input_size))
-    with torch.no_grad():
+    with torch.inference_mode():
         output = model(x)
     assert output.shape[-2:] == (expected_output_size, expected_output_size)
 

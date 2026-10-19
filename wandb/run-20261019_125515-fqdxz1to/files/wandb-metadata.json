@@ -1,0 +1,48 @@
+{
+  "os":  "Linux-7.1.8-200.fc44.x86_64-x86_64-with-glibc2.39",
+  "python":  "CPython 3.12.14",
+  "startedAt":  "2026-10-19T07:10:15.145673Z",
+  "args":  [
+    "--config",
+    "./configs/config.yaml"
+  ],
+  "program":  "/var/home/supremekhadka/Projects/u-net/train.py",
+  "codePath":  "train.py",
+  "codePathLocal":  "train.py",
+  "git":  {
+    "remote":  "git@github.com:supremekhadka/u-net.git",
+    "commit":  "e3285fae62ad03af3e66a9aa9006531b6b528d44"
+  },
+  "email":  "supremekhadka2@gmail.com",
+  "root":  "/var/home/supremekhadka/Projects/u-net",
+  "host":  "supreme",
+  "executable":  "/var/home/supremekhadka/Projects/u-net/.venv/bin/python3",
+  "cpu_count":  8,
+  "cpu_count_logical":  16,
+  "gpu":  "NVIDIA GeForce GTX 1650 Ti",
+  "gpu_count":  1,
+  "disk":  {
+    "/":  {
+      "total":  "29433856",
+      "used":  "29433856"
+    }
+  },
+  "memory":  {
+    "total":  "16085385216"
+  },
+  "cpu":  {
+    "model":  "AMD Ryzen 7 4800H with Radeon Graphics"
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA GeForce GTX 1650 Ti",
+      "memoryTotal":  "4294967296",
+      "cudaCores":  1024,
+      "architecture":  "Turing",
+      "uuid":  "GPU-d393d7c8-e9fa-ce39-8f8d-41622c565d36",
+      "pciBusId":  "00000000:01:00.0"
+    }
+  ],
+  "cudaVersion":  "13.4",
+  "writerId":  "01a152ff-2477-7a1c-8a87-0aa89b97b267"
+}

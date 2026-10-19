@@ -1,9 +1,8 @@
 import os
-
 import torch
-from unet.model import UNet
+from .model import UNet
 from tqdm import tqdm
-from unet.metrics import dice
+from .metrics import segmentation_metrics
 from pathlib import Path
 
 def load_model(device, in_channels, out_channels, base_channels=64, depth=4, checkpoint=None):
@@ -45,7 +44,7 @@ def validate(model, device, dataloader, criterion):
     outputs = []
     labels = []
 
-    with torch.no_grad():
+    with torch.inference_mode():
         for images, masks in tqdm(dataloader):
             images, masks = images.to(device), masks.to(device)
             labels.append(masks)
@@ -55,30 +54,43 @@ def validate(model, device, dataloader, criterion):
             running_loss += loss.item()
 
         average_loss = running_loss / len(dataloader)
-        dice_score = dice(torch.cat(outputs), torch.cat(labels))
+        metrics = segmentation_metrics(torch.cat(outputs), torch.cat(labels))
 
-    return average_loss, dice_score
+    return average_loss, metrics
 
 def save_checkpoint(model, dir, name):
     os.makedirs(dir, exist_ok=True)
     checkpoint_path = Path(dir) / name
     torch.save(model.state_dict(), checkpoint_path)
 
-def run_training(model, device, train_dataloader, val_dataloader, criterion, optimizer, epochs, output_dir):
+def run_training(model, device, train_dataloader, val_dataloader, criterion, optimizer, epochs, output_dir, wandb=None):
     criterion = criterion.to(device)
 
     best_dice_score = -float('inf')
 
     for epoch in range(epochs):
         train_loss = train_one_epoch(epoch, model, device, train_dataloader, criterion, optimizer)
-        _, train_dice_score = validate(model, device, train_dataloader, criterion)
-        val_loss, val_dice_score = validate(model, device, val_dataloader, criterion)
+        _, train_metrics = validate(model, device, train_dataloader, criterion)
+        val_loss, val_metrics = validate(model, device, val_dataloader, criterion)
 
-        print(f"Train Loss: {train_loss} | Train Dice Score: {train_dice_score} | Val Loss: {val_loss} | Val Dice Score: {val_dice_score}")
-        if val_dice_score > best_dice_score:
-            best_dice_score = val_dice_score
+        if wandb is not None:
+            wandb.log({
+                "train/loss": train_loss,
+                "val/loss": val_loss,
+                **{f"train/{name}": value for name, value in train_metrics.items()},
+                **{f"val/{name}": value for name, value in val_metrics.items()},
+                "epoch": epoch
+            })
+
+        print(
+            f"Train Loss: {train_loss} | Train Metrics: {train_metrics} | "
+            f"Val Loss: {val_loss} | Val Metrics: {val_metrics}"
+        )
+        if val_metrics["dice"] > best_dice_score:
+            best_dice_score = val_metrics["dice"]
             save_checkpoint(model, output_dir, "best.pt")
             
         save_checkpoint(model, output_dir, "last.pt")
+
 
     print(f"Training completed! Model checkpoints saved to {output_dir}")

@@ -17,3 +17,7 @@ training:
   lr: 1e-5
   batch_size: 2
   output_dir: "./outputs/first"
+
+wandb:
+  enable: True
+  project: "unet-brisc"
