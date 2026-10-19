@@ -3,6 +3,7 @@ import os
 import torch
 from unet.model import UNet
 from tqdm import tqdm
+from unet.metrics import dice
 from pathlib import Path
 
 def load_model(device, in_channels, out_channels, base_channels=64, depth=4, checkpoint=None):
@@ -41,16 +42,22 @@ def validate(model, device, dataloader, criterion):
     model.eval()
     running_loss = 0
 
+    outputs = []
+    labels = []
+
     with torch.no_grad():
         for images, masks in tqdm(dataloader):
             images, masks = images.to(device), masks.to(device)
+            labels.append(masks)
             output = model(images)
+            outputs.append(output)
             loss = criterion(output, masks)
             running_loss += loss.item()
 
         average_loss = running_loss / len(dataloader)
+        dice_score = dice(torch.cat(outputs), torch.cat(labels))
 
-    return average_loss
+    return average_loss, dice_score
 
 def save_checkpoint(model, dir, name):
     os.makedirs(dir, exist_ok=True)
@@ -60,15 +67,16 @@ def save_checkpoint(model, dir, name):
 def run_training(model, device, train_dataloader, val_dataloader, criterion, optimizer, epochs, output_dir):
     criterion = criterion.to(device)
 
-    best_loss = float('inf')
+    best_dice_score = -float('inf')
 
     for epoch in range(epochs):
         train_loss = train_one_epoch(epoch, model, device, train_dataloader, criterion, optimizer)
-        val_loss = validate(model, device, val_dataloader, criterion)
+        _, train_dice_score = validate(model, device, train_dataloader, criterion)
+        val_loss, val_dice_score = validate(model, device, val_dataloader, criterion)
 
-        print(f"Train Loss: {train_loss} | Val Loss: {val_loss}")
-        if val_loss < best_loss:
-            best_loss = val_loss
+        print(f"Train Loss: {train_loss} | Train Dice Score: {train_dice_score} | Val Loss: {val_loss} | Val Dice Score: {val_dice_score}")
+        if val_dice_score > best_dice_score:
+            best_dice_score = val_dice_score
             save_checkpoint(model, output_dir, "best.pt")
             
         save_checkpoint(model, output_dir, "last.pt")
